@@ -197,3 +197,46 @@ node = {
   y:           //节点对应圆圆心y坐标
 }
 ```
+# force力导向图
+生成器：
+```js
+//定义力布局
+var force = d3.layout
+              .force()
+              .size([width, height]);
+```
+原始数据为data,力布局调用方式如下：
+```js
+var data={  //节点
+  "nodes":[
+    {"name":"A"},    {"name":"B"},    {"name":"C"}...
+  ],
+  "links":[ //连接
+    {"source":1,"target":0},    {"source":2,"target":0},...
+  ]
+};
+//加载数据，启动力布局
+force.nodes(data.nodes)
+     .links(data.links)
+     .start();
+//按照力布局的节拍移动线和点的位置，直到收敛
+force.on("tick", function() {
+  link.attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+  node.attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; });
+});
+```
+启动力布局后，data.nodes,data.links数据发生变化,添加了部分属性
+```js
+node = {
+  index:0   //节点索引号
+  name:"A"  //节点名称
+  x:        //节点x坐标(已为视图坐标，无需比例尺转换)
+  y:        //节点y坐标(已为视图坐标，无需比例尺转换)
+  weight：  //权重，表征有多少节点与之相连
+}
+```
