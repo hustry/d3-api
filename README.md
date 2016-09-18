@@ -168,3 +168,32 @@ link:{
   target:{node节点}   //目标节点
 }
 ```
+#pack图
+生成器：
+```js
+var pack = d3.layout
+             .pack()
+             .size([width, height]);
+```
+调用方式：
+```js
+svg.selectAll("circle")
+    .data(pack.nodes(root))
+    .enter()
+    .append("circle")
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
+    .attr("r", function(d) { return d.r; })
+    .attr("fill", function(d,i) { return color(i); });
+```
+其中pack.nodes(root)返回的对象数组中对象如下：
+```js
+node = {
+  children:[]  //子节点
+  depth:0      //节点所处层次
+  r:           //节点对应圆的半径
+  value:       //节点对应值
+  x:           //节点对应圆圆心x坐标
+  y:           //节点对应圆圆心y坐标
+}
+```
