@@ -240,3 +240,62 @@ node = {
   weight：  //权重，表征有多少节点与之相连
 }
 ```
+# tree树图
+生成器
+```js
+var tree = d3.layout
+             .tree()
+             .size([dia,dia]);             
+```
+获取nodes与links
+```js
+//树状数据结构
+var data={
+   value:1,
+   children: 
+   [
+      { 
+        value:1, 
+        children: 
+          [
+            {
+              value:1, 
+              children: 
+              [
+                {
+                 value:1, 
+                 children: [{value:1},{value:1}]
+                },
+                {value:1}
+              ]
+            },
+            {
+              value:1
+            }   
+          ]
+      },
+      {
+        value:1
+      }
+   ]
+};
+var nodes = tree.nodes(data);
+var links = tree.links(nodes);
+```
+最后分别使用diag和circle来绘制连线与节点
+```js
+var link = svg.selectAll(".link")
+              .data(links)
+              .enter()
+              .append("path")
+              .attr("class", "link")
+              .attr("d", diagonal); //调用diagonal生成器绘制连线
+var node = svg.selectAll(".node")
+              .data(nodes)
+              .enter()
+              .append("g")
+              .attr("class", "node")
+              .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+              .append("circle") //使用circle绘制节点
+              .attr("r", 4.5);
+```
