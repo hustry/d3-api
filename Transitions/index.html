@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3-API</title>
+    <script src="../d3.js"></script>
+    <style>
+    	circle{
+    		fill:red;    		
+    	}
+    </style>
+</head>
+<body>
+		<script type="text/javascript">
+
+			var svg = d3.select('body')
+				.append('svg')
+				.attr({
+					"width": 700,
+					"height": 500,
+				});
+			//添加圆
+			svg.append('circle')
+				.attr({
+					cx: 100,
+					cy: 100,
+					r: 50
+				});
+			
+			svg.selectAll('circle')
+			  .transition()
+				.duration(1500)
+				.ease(d3.ease("elastic-out")) //设置ease函数
+				.attr('r', 100)
+			  .transition()
+				.duration(1500)
+				.ease(d3.ease("poly",3))
+				.attr('r', 50);
+		</script>
+</body>
+</html>
