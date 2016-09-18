@@ -118,3 +118,53 @@ var dataset = [
   }
 ];
 ```
+# cluster集群图
+生成器：
+```js
+var cluster = d3.layout
+                .cluster()
+                .size([height, width]); //注意width与height顺序
+```
+输入数据：
+```js
+//层次对象，每个对象有name属性与children数组属性
+var data={
+  "name":"A",
+  "children":[
+      {
+          "name":"B01",
+          "children":[
+              { "name":"C01"  },
+              { "name":"C02"  },
+              { "name":"C03"  }
+          ]
+      },
+      {
+          "name":"B02",
+          "children":[
+              { "name":"C04"  },
+              { "name":"C05"  }
+          ]
+      }
+  ]
+};
+```
+其后获取node与link
+```js
+  var nodes = cluster.nodes(data);
+  var links = cluster.links(nodes);
+```
+nodes与links均为对象数组，每个对象数据结构如下:
+```js
+node:{
+  children:[] //后代节点数组
+  depth：0    //节点所处深度
+  name:"A"    //节点名称
+  x:          //绘制节点x坐标(此为像素坐标，无需再使用比例尺)
+  y:          //绘制节点y坐标(此为像素坐标，无需再使用比例尺)
+}
+link:{
+  source:{node节点}   //源节点
+  target:{node节点}   //目标节点
+}
+```
